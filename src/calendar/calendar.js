@@ -13,6 +13,7 @@ var Calendar = /** @class */ (function () {
     function Calendar() {
         this.onDaySelect = new core_1.EventEmitter();
         this.onMonthSelect = new core_1.EventEmitter();
+        this.currentMonthYearDate = new core_1.EventEmitter();
         this.events = [];
         this.currentYear = moment().year();
         this.currentMonth = moment().month();
@@ -32,6 +33,9 @@ var Calendar = /** @class */ (function () {
     };
     Calendar.prototype.ngDoCheck = function () {
         this.createMonth(this.displayYear, this.displayMonth);
+    };
+    Calendar.prototype.convertToMonthYearDate = function (month, year) {
+        return new Date(Date.UTC(year, month, 1));
     };
     // Jump to today
     Calendar.prototype.today = function () {
@@ -65,6 +69,7 @@ var Calendar = /** @class */ (function () {
         return result ? result : {};
     };
     Calendar.prototype.createMonth = function (year, month) {
+        this.currentMonthYearDate.emit(this.convertToMonthYearDate(month, year));
         this.dateArray = []; // Clear last month's data
         this.weekArray = []; // Clear week data
         var firstDay;
@@ -235,6 +240,9 @@ var Calendar = /** @class */ (function () {
     __decorate([
         core_1.Output()
     ], Calendar.prototype, "onMonthSelect");
+    __decorate([
+        core_1.Output()
+    ], Calendar.prototype, "currentMonthYearDate");
     __decorate([
         core_1.Input()
     ], Calendar.prototype, "events");

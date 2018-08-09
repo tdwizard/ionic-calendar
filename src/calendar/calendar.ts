@@ -38,6 +38,7 @@ export class Calendar {
 
     @Output() onDaySelect = new EventEmitter<dateObj>();
     @Output() onMonthSelect = new EventEmitter<any>();
+    @Output() currentMonthYearDate = new EventEmitter<Date>();
     @Input() events: Array<singularDate> = [];
     @Input() lang: string;
 
@@ -68,6 +69,10 @@ export class Calendar {
       this.createMonth(this.displayYear, this.displayMonth);
     }
 
+    public convertToMonthYearDate(month,year)
+    {
+      return new Date( Date.UTC(year, month, 1) );
+    }
 
     // Jump to today
     today() {
@@ -107,6 +112,7 @@ export class Calendar {
     }
 
     createMonth(year: number, month: number) {
+        this.currentMonthYearDate.emit(this.convertToMonthYearDate(month,year));
         this.dateArray = []; // Clear last month's data
         this.weekArray = []; // Clear week data
 
