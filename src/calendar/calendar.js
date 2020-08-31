@@ -228,7 +228,9 @@ var Calendar = /** @class */ (function () {
     // Select a day, click event
     Calendar.prototype.daySelect = function (day, i, j) {
         // First clear the last click status
-        this.dateArray[this.lastSelect].isSelect = false;
+        if (this.lastSelect <= this.dateArray.length) {
+            this.dateArray[this.lastSelect].isSelect = false;
+        }
         // Store this clicked status
         this.lastSelect = i * 7 + j;
         this.dateArray[i * 7 + j].isSelect = true;
