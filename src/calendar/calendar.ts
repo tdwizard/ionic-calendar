@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import * as moment from 'moment';
 import * as _ from "lodash";
 
@@ -54,24 +54,23 @@ export class Calendar {
     weekArray = []; // Array for each row of the calendar
     lastSelect: number = 0; // Record the last clicked location
 
-    weekHead: number[] = [0,1,2,3,4,5,6];
+    weekHead: number[] = [0, 1, 2, 3, 4, 5, 6];
 
     constructor() {
-      this.today();
-      this.createMonth(this.displayYear, this.displayMonth);
+        this.today();
+        this.createMonth(this.displayYear, this.displayMonth);
     }
 
     ngOnChanges() {
-      this.createMonth(this.displayYear, this.displayMonth);
+        this.createMonth(this.displayYear, this.displayMonth);
     }
 
     ngDoCheck() {
-      this.createMonth(this.displayYear, this.displayMonth);
+        this.createMonth(this.displayYear, this.displayMonth);
     }
 
-    public convertToMonthYearDate(month,year)
-    {
-      return new Date( Date.UTC(year, month, 1) );
+    public convertToMonthYearDate(month, year) {
+        return new Date(Date.UTC(year, month, 1));
     }
 
     // Jump to today
@@ -94,25 +93,24 @@ export class Calendar {
     }
 
     isInEvents(year, month, date) {
-      var i=0, len=this.events.length;
-      for (; i<len; i++) {
-        if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
-          return true;
+        var i = 0, len = this.events.length;
+        for (; i < len; i++) {
+            if (this.events[i].year == year && this.events[i].month == month && this.events[i].date == date) {
+                return true;
+            }
         }
-      }
-      return false;
+        return false;
     }
 
-    getEventRecord(year, month, date):any
-    {
-      var result = this.events.find((el) => {
-        return el.year == year && el.month == month && el.date == date;
-      });
-      return result?result:{};
+    getEventRecord(year, month, date): any {
+        var result = this.events.find((el) => {
+            return el.year == year && el.month == month && el.date == date;
+        });
+        return result ? result : {};
     }
 
     createMonth(year: number, month: number) {
-        this.currentMonthYearDate.emit(this.convertToMonthYearDate(month,year));
+        this.currentMonthYearDate.emit(this.convertToMonthYearDate(month, year));
         this.dateArray = []; // Clear last month's data
         this.weekArray = []; // Clear week data
 
@@ -126,15 +124,15 @@ export class Calendar {
         let monthDays; // The number of days for the month
         let weekDays: Array<dateObj> = [];
 
-        firstDay = moment({ year: year, month: month, date: 1 }).day();
+        firstDay = moment({year: year, month: month, date: 1}).day();
         // The number of days last month
         if (month === 0) {
-            preMonthDays = moment({ year: year - 1, month: 11 }).daysInMonth();
+            preMonthDays = moment({year: year - 1, month: 11}).daysInMonth();
         } else {
-            preMonthDays = moment({ year: year, month: month - 1 }).daysInMonth();
+            preMonthDays = moment({year: year, month: month - 1}).daysInMonth();
         }
         // The number of days this month
-        monthDays = moment({ year: year, month: month }).daysInMonth();
+        monthDays = moment({year: year, month: month}).daysInMonth();
 
         // PREVIOUS MONTH
         // Add the last few days of the previous month to the array
@@ -146,7 +144,7 @@ export class Calendar {
             let lastMonthStart = preMonthDays - firstDay + 1; // From the last few months start
             for (let i = 0; i < firstDay; i++) {
                 if (month === 0) {
-                    let record = this.getEventRecord(year,11,lastMonthStart + i);
+                    let record = this.getEventRecord(year, 11, lastMonthStart + i);
                     this.dateArray.push({
                         year: year,
                         month: 11,
@@ -154,12 +152,12 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, 11, lastMonthStart+i)) ? true : false,
+                        hasEvent: (this.isInEvents(year, 11, lastMonthStart + i)) ? true : false,
                         onClick: record.onClick,
                         eventCSS: record.eventCSS
                     })
                 } else {
-                    let record = this.getEventRecord(year,month-1,lastMonthStart + i);
+                    let record = this.getEventRecord(year, month - 1, lastMonthStart + i);
                     this.dateArray.push({
                         year: year,
                         month: month - 1,
@@ -167,7 +165,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, month-1, lastMonthStart+i)) ? true : false,
+                        hasEvent: (this.isInEvents(year, month - 1, lastMonthStart + i)) ? true : false,
                         onClick: record.onClick,
                         eventCSS: record.eventCSS
                     })
@@ -178,7 +176,7 @@ export class Calendar {
 
         // Add the numeral for this month to the array
         for (let i = 0; i < monthDays; i++) {
-            let record = this.getEventRecord(year,month,i + 1);
+            let record = this.getEventRecord(year, month, i + 1);
             this.dateArray.push({
                 year: year,
                 month: month,
@@ -186,7 +184,7 @@ export class Calendar {
                 isThisMonth: true,
                 isToday: false,
                 isSelect: false,
-                hasEvent: (this.isInEvents(year, month, i+1)) ? true : false,
+                hasEvent: (this.isInEvents(year, month, i + 1)) ? true : false,
                 onClick: record.onClick,
                 eventCSS: record.eventCSS
             })
@@ -206,7 +204,7 @@ export class Calendar {
         if (this.dateArray.length % 7 !== 0) {
             let nextMonthAdd = 7 - this.dateArray.length % 7
             for (let i = 0; i < nextMonthAdd; i++) {
-                let record = this.getEventRecord(year,0,i + 1);
+                let record = this.getEventRecord(year, 0, i + 1);
                 if (month === 11) {
                     this.dateArray.push({
                         year: year,
@@ -215,12 +213,12 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, 0, i+1)) ? true : false,
+                        hasEvent: (this.isInEvents(year, 0, i + 1)) ? true : false,
                         onClick: record.onClick,
                         eventCSS: record.eventCSS
                     })
                 } else {
-                    let record = this.getEventRecord(year,month + 1,i + 1);
+                    let record = this.getEventRecord(year, month + 1, i + 1);
                     this.dateArray.push({
                         year: year,
                         month: month + 1,
@@ -228,7 +226,7 @@ export class Calendar {
                         isThisMonth: false,
                         isToday: false,
                         isSelect: false,
-                        hasEvent: (this.isInEvents(year, month+1, i+1)) ? true : false,
+                        hasEvent: (this.isInEvents(year, month + 1, i + 1)) ? true : false,
                         onClick: record.onClick,
                         eventCSS: record.eventCSS
                     })
@@ -258,8 +256,8 @@ export class Calendar {
             this.displayMonth--;
         }
         this.onMonthSelect.emit({
-          'year': this.displayYear,
-          'month': this.displayMonth
+            'year': this.displayYear,
+            'month': this.displayMonth
         });
         this.createMonth(this.displayYear, this.displayMonth);
     }
@@ -273,8 +271,8 @@ export class Calendar {
             this.displayMonth++;
         }
         this.onMonthSelect.emit({
-          'year': this.displayYear,
-          'month': this.displayMonth
+            'year': this.displayYear,
+            'month': this.displayMonth
         });
         this.createMonth(this.displayYear, this.displayMonth);
     }
@@ -282,7 +280,9 @@ export class Calendar {
     // Select a day, click event
     daySelect(day, i, j) {
         // First clear the last click status
-        this.dateArray[this.lastSelect].isSelect = false;
+        if (this.lastSelect <= this.dateArray.length) {
+            this.dateArray[this.lastSelect].isSelect = false;
+        }
         // Store this clicked status
         this.lastSelect = i * 7 + j;
         this.dateArray[i * 7 + j].isSelect = true;
@@ -292,11 +292,11 @@ export class Calendar {
 }
 
 interface singularDate {
-  year: number,
-  month: number,
-  date: number,
-  onClick?: any,
-  eventCSS?:string
+    year: number,
+    month: number,
+    date: number,
+    onClick?: any,
+    eventCSS?: string
 }
 
 // Each grid item of a calendar
